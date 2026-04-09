@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      target: production
+    container_name: acquisition-app-prod
+    ports:
+      - '3000:3000'
+    env_file:
+      - .env.production
+    restart: unless-stopped
+    init: true
+    networks:
+      - acquisition-production
+    healthcheck:
+      test: ['CMD', 'node', '-e', "require('http').get('http://localhost:3000/health', res => process.exit(res.statusCode===200?0:1))"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+networks:
+  acquisition-production:
+    driver: bridge

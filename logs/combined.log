@@ -374,3 +374,13 @@
 {"level":"info","message":"::1 - - [08/Apr/2026:12:03:57 +0000] \"GET /health HTTP/1.1\" 403 50 \"-\" \"HTTPie\"","service":"acquisitions-api","timestamp":"2026-04-08T12:03:57.325Z"}
 {"ip":"::1","level":"warn","message":"Rate limit exceeded","path":"/health","service":"acquisitions-api","timestamp":"2026-04-08T12:03:57.820Z","userAgent":"HTTPie"}
 {"level":"info","message":"::1 - - [08/Apr/2026:12:03:57 +0000] \"GET /health HTTP/1.1\" 403 50 \"-\" \"HTTPie\"","service":"acquisitions-api","timestamp":"2026-04-08T12:03:57.822Z"}
+{"level":"info","message":"::1 - - [08/Apr/2026:13:07:54 +0000] \"GET /health HTTP/1.1\" 200 75 \"-\" \"HTTPie\"","service":"acquisitions-api","timestamp":"2026-04-08T13:07:54.151Z"}
+{"level":"info","message":"Hello from Acquisitions","service":"acquisitions-api","timestamp":"2026-04-09T06:50:26.804Z"}
+{"level":"info","message":"::ffff:172.20.0.1 - - [09/Apr/2026:06:50:26 +0000] \"GET / HTTP/1.1\" 200 5 \"-\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:149.0) Gecko/20100101 Firefox/149.0\"","service":"acquisitions-api","timestamp":"2026-04-09T06:50:26.819Z"}
+{"level":"info","message":"::ffff:172.20.0.1 - - [09/Apr/2026:06:50:33 +0000] \"GET /health HTTP/1.1\" 200 76 \"-\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:149.0) Gecko/20100101 Firefox/149.0\"","service":"acquisitions-api","timestamp":"2026-04-09T06:50:33.668Z"}
+{"level":"info","message":"::ffff:172.20.0.1 - - [09/Apr/2026:06:50:33 +0000] \"GET /favicon.ico HTTP/1.1\" 404 150 \"-\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:149.0) Gecko/20100101 Firefox/149.0\"","service":"acquisitions-api","timestamp":"2026-04-09T06:50:33.858Z"}
+{"level":"info","message":"Hello from Acquisitions","service":"acquisitions-api","timestamp":"2026-04-09T08:29:16.061Z"}
+{"level":"info","message":"::ffff:172.21.0.1 - - [09/Apr/2026:08:29:16 +0000] \"GET / HTTP/1.1\" 200 5 \"-\" \"HTTPie\"","service":"acquisitions-api","timestamp":"2026-04-09T08:29:16.070Z"}
+{"level":"info","message":"User kubra@mail.com created successfully","service":"acquisitions-api","timestamp":"2026-04-09T08:30:07.961Z"}
+{"level":"info","message":"User registered successfully: kubra@mail.com","service":"acquisitions-api","timestamp":"2026-04-09T08:30:07.964Z"}
+{"level":"info","message":"::ffff:172.21.0.1 - - [09/Apr/2026:08:30:07 +0000] \"POST /api/auth/sign-up HTTP/1.1\" 201 99 \"-\" \"HTTPie\"","service":"acquisitions-api","timestamp":"2026-04-09T08:30:07.965Z"}
