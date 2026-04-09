@@ -1,3 +1,4 @@
 node_modules
 .idea
-.env.*.neon_local/
+.env.*
+.env

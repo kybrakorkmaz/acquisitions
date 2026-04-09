@@ -5,7 +5,7 @@ import morgan from 'morgan';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import authRoutes from '#routes/auth.routes.js';
-import securityMiddleware from "#middleware/security.middleware.js"
+import securityMiddleware from '#middleware/security.middleware.js';
 const app = express();
 
 app.use(helmet());
@@ -34,5 +34,5 @@ app.get('/api', (req, res)=>{
   res.status(200).json({message: 'Acquisitions API is running'});
 });
 app.use('/api/auth', authRoutes);
-
+app.use('api/users', usersRoutes);
 export default app;
