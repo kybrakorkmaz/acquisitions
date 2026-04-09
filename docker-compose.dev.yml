@@ -1,45 +1,25 @@
-version: '3.8'
-
 services:
-  neon-local:
-    image: neondatabase/neon_local:latest
-    container_name: acquisition-neon-local
-    ports:
-      - '5432:5432'
-    env_file:
-      - .env.development
-    volumes:
-      - ./.neon_local/:/tmp/.neon_local
-    networks:
-      - acquisition-network
-    healthcheck:
-      test: ['CMD', 'pg_isready', '-h', 'localhost', '-p', '5432', '-U', 'acquisitions_user']
-      interval: 10s
-      timeout: 5s
-      retries: 5
-
   app:
     build:
       context: .
+      dockerfile: Dockerfile
       target: development
     container_name: acquisition-app-dev
     ports:
-      - '3000:3000'
+      - '${PORT:-3000}:3000'
     env_file:
       - .env.development
     volumes:
       - .:/app
-      - node_modules:/app/node_modules
-    depends_on:
-      neon-local:
-        condition: service_healthy
-    networks:
-      - acquisition-network
+      - /app/node_modules
+      - ./logs:/app/logs
     restart: unless-stopped
 
-networks:
-  acquisition-network:
-    driver: bridge
-
-volumes:
-  node_modules:
+  # Neon Local sadece devde
+  neon-local:
+    image: neondatabase/neon_local:latest
+    container_name: neon-local
+    ports:
+      - '5432:5432'
+    env_file:
+      - .env.development

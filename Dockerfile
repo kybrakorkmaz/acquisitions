@@ -1,29 +1,47 @@
-# Base
+# ============================================
+# Base Image
+# ============================================
 FROM node:20-alpine AS base
 
 WORKDIR /app
-COPY package*.json ./
+RUN apk add --no-cache libc6-compat
 
-# ======================
-# DEVELOPMENT
-# ======================
+# ============================================
+# Development Stage
+# ============================================
 FROM base AS development
-
-RUN npm install
-COPY . .
 
 ENV NODE_ENV=development
 
-CMD ["npm", "run", "dev"]
+COPY package*.json ./
+RUN npm install && npm cache clean --force
 
-# ======================
-# PRODUCTION
-# ======================
-FROM base AS production
-
-RUN npm install --omit=dev
 COPY . .
 
+EXPOSE 3000
+
+CMD ["npm", "run", "dev"]
+
+# ============================================
+# Production Stage
+# ============================================
+FROM base AS production
+
 ENV NODE_ENV=production
+
+COPY package*.json ./
+RUN npm ci --omit=dev && npm cache clean --force
+
+# Non-root user for security
+RUN addgroup -S nodejs && adduser -S nodejs -G nodejs
+
+COPY . .
+RUN chown -R nodejs:nodejs /app
+USER nodejs
+
+EXPOSE 3000
+
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+  CMD node -e "require('http').get('http://localhost:3000/health', (res) => process.exit(res.statusCode === 200 ? 0 : 1)).on('error', () => process.exit(1))"
 
 CMD ["npm", "start"]
