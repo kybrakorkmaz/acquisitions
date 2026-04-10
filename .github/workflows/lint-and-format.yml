@@ -66,4 +66,3 @@ jobs:
       - name: Fail if linting or formatting issues found
         if: steps.eslint.outcome == 'failure' || steps.prettier.outcome == 'failure'
         run: exit 1
-

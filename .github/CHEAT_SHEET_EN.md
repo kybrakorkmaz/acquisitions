@@ -25,6 +25,7 @@ acquisitions/
 ## ⚡ Quick Commands
 
 ### Local Test
+
 ```bash
 npm run lint          # ESLint check
 npm run lint:fix      # ESLint fix
@@ -35,12 +36,14 @@ npm test -- --coverage  # Tests with coverage
 ```
 
 ### Docker
+
 ```bash
 npm run dev:docker    # Development (Neon Local)
 npm run prod:docker   # Production
 ```
 
 ### Database
+
 ```bash
 npm run db:generate   # Create migration
 npm run db:migrate    # Apply migration
@@ -60,6 +63,7 @@ DOCKER_PASSWORD = your-docker-pat-token
 ```
 
 **How to create token:**
+
 1. Docker Hub → Account Settings → Security
 2. New Access Token → Generate
 3. Copy token → Paste to GitHub Secrets
@@ -68,28 +72,31 @@ DOCKER_PASSWORD = your-docker-pat-token
 
 ## 📊 Workflow Matrix
 
-| File | Trigger | Node | Cache | Cache? |
-|------|---------|------|-------|--------|
-| lint-and-format.yml | push/PR (main,staging) | 20.x | npm | ✅ |
-| tests.yml | push/PR (main,staging) | 20.x | npm | ✅ |
-| docker-build-and-push.yml | push (main) + manual | - | gha | ✅ |
+| File                      | Trigger                | Node | Cache | Cache? |
+| ------------------------- | ---------------------- | ---- | ----- | ------ |
+| lint-and-format.yml       | push/PR (main,staging) | 20.x | npm   | ✅     |
+| tests.yml                 | push/PR (main,staging) | 20.x | npm   | ✅     |
+| docker-build-and-push.yml | push (main) + manual   | -    | gha   | ✅     |
 
 ---
 
 ## 🎯 What Each Workflow Does
 
 ### 1. lint-and-format.yml
+
 ```
 ESLint → Prettier → PR Comment → Fail/Pass
 ```
 
 ### 2. tests.yml
+
 ```
 PostgreSQL ↓
 npm test --coverage → Artifacts → Summary → Comment → Fail/Pass
 ```
 
 ### 3. docker-build-and-push.yml
+
 ```
 Docker Buildx → amd64 + arm64 → Docker Hub → Summary
 ```
@@ -99,6 +106,7 @@ Docker Buildx → amd64 + arm64 → Docker Hub → Summary
 ## 🔍 Debugging a Workflow
 
 ### GitHub Actions Dashboard
+
 ```
 1. Repository → Actions
 2. Select workflow → Select run
@@ -106,11 +114,13 @@ Docker Buildx → amd64 + arm64 → Docker Hub → Summary
 ```
 
 ### View PR Comments
+
 ```
 PR → Conversation tab → Bot comments
 ```
 
 ### Download Artifacts
+
 ```
 Run details → Artifacts → Download coverage-report
 ```
@@ -120,6 +130,7 @@ Run details → Artifacts → Download coverage-report
 ## 🆘 Common Issues
 
 ### Docker Push Failed
+
 ```
 Check:
 - DOCKER_USERNAME secret correct?
@@ -129,6 +140,7 @@ Check:
 ```
 
 ### Tests Failed
+
 ```
 1. Run locally: npm test
 2. Check coverage: coverage/
@@ -136,6 +148,7 @@ Check:
 ```
 
 ### Lint/Format Failed
+
 ```
 1. Fix: npm run lint:fix
 2. Format: npm run format
@@ -207,6 +220,7 @@ git push origin main
 ## 🚨 Cancel Workflow
 
 In GitHub Actions UI:
+
 ```
 1. Actions → Active workflow
 2. Right menu "..."
@@ -218,6 +232,7 @@ In GitHub Actions UI:
 ## 📞 Support
 
 If issues occur:
+
 1. Check GitHub Actions logs
 2. Read WORKFLOWS_README.md
 3. Check SECRETS_SETUP.md
@@ -226,4 +241,3 @@ If issues occur:
 ---
 
 **Last Updated:** 2026-04-10
-

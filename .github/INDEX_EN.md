@@ -7,7 +7,9 @@ This directory contains all documentation for the GitHub Actions CI/CD pipeline.
 ## 📚 Documentation Guide
 
 ### 1. **SETUP_SUMMARY.md** 🎯 (START HERE!)
+
 **Complete setup overview**
+
 - ✅ List of created files
 - ✅ Workflow summary table
 - ✅ Required GitHub Secrets
@@ -20,7 +22,9 @@ This directory contains all documentation for the GitHub Actions CI/CD pipeline.
 ---
 
 ### 2. **CHEAT_SHEET.md** ⚡ (QUICK REFERENCE)
+
 **Quick commands and links**
+
 - ✅ File locations
 - ✅ Frequently used commands
 - ✅ Workflow matrix
@@ -33,7 +37,9 @@ This directory contains all documentation for the GitHub Actions CI/CD pipeline.
 ---
 
 ### 3. **WORKFLOWS_README.md** 📋 (DETAILED EXPLANATION)
+
 **Complete explanation of each workflow**
+
 - ✅ Workflow trigger conditions
 - ✅ Step-by-step explanation of actions
 - ✅ Environment variables
@@ -46,7 +52,9 @@ This directory contains all documentation for the GitHub Actions CI/CD pipeline.
 ---
 
 ### 4. **SECRETS_SETUP.md** 🔐 (SECRETS SETUP)
+
 **Learn how to set up GitHub Secrets**
+
 - ✅ Creating Docker Hub account
 - ✅ Creating Personal Access Token (PAT)
 - ✅ Adding GitHub Secrets (Web UI and CLI)
@@ -59,6 +67,7 @@ This directory contains all documentation for the GitHub Actions CI/CD pipeline.
 ---
 
 ### 5. **INDEX.md** 📖 (THIS FILE)
+
 **This document - map of all documentation**
 
 ---
@@ -66,6 +75,7 @@ This directory contains all documentation for the GitHub Actions CI/CD pipeline.
 ## 🚀 Getting Started Journey
 
 ### If you're setting up for the first time:
+
 ```
 1. Read SETUP_SUMMARY.md (understand entire setup)
 2. Read SECRETS_SETUP.md (add Docker secrets)
@@ -74,16 +84,19 @@ This directory contains all documentation for the GitHub Actions CI/CD pipeline.
 ```
 
 ### If you want to remember something quickly:
+
 ```
 → Open CHEAT_SHEET.md
 ```
 
 ### If you need info about a specific workflow:
+
 ```
 → Read WORKFLOWS_README.md
 ```
 
 ### If you're having Docker push issues:
+
 ```
 1. Check SECRETS_SETUP.md
 2. Look at "Docker Push Failed" section in CHEAT_SHEET.md
@@ -95,12 +108,14 @@ This directory contains all documentation for the GitHub Actions CI/CD pipeline.
 ## 📊 Workflow Summary
 
 ### 1. lint-and-format.yml ✨
+
 - **Trigger:** Push/PR → main, staging
 - **Purpose:** ESLint + Prettier check
 - **Duration:** ~2-3 minutes
 - **On failure:** Posts comment on PR + workflow fails
 
 ### 2. tests.yml 🧪
+
 - **Trigger:** Push/PR → main, staging
 - **Purpose:** Jest tests + coverage
 - **Duration:** ~3-5 minutes
@@ -108,6 +123,7 @@ This directory contains all documentation for the GitHub Actions CI/CD pipeline.
 - **On failure:** Posts comment on PR + workflow fails
 
 ### 3. docker-build-and-push.yml 🐳
+
 - **Trigger:** Push → main (only)
 - **Purpose:** Build and push Docker image to Docker Hub
 - **Duration:** ~5-10 minutes
@@ -118,9 +134,9 @@ This directory contains all documentation for the GitHub Actions CI/CD pipeline.
 
 ## 🔑 Required Secrets
 
-| Secret | Required | From |
-|--------|----------|------|
-| DOCKER_USERNAME | Yes (for Docker build) | Docker Hub profile |
+| Secret          | Required               | From                  |
+| --------------- | ---------------------- | --------------------- |
+| DOCKER_USERNAME | Yes (for Docker build) | Docker Hub profile    |
 | DOCKER_PASSWORD | Yes (for Docker build) | Docker Hub → Security |
 
 ---
@@ -180,15 +196,19 @@ Have you completed setup?
 ## 🆘 Emergency Help
 
 ### "Workflow not running!"
+
 → Check "Initial Setup Steps" in SETUP_SUMMARY.md
 
 ### "Docker push failed!"
+
 → Check "Creating Docker Hub Secrets" in SECRETS_SETUP.md
 
 ### "Tests failed!"
+
 → Look at "Test Failed" section in CHEAT_SHEET.md
 
-### "What should I do?" 
+### "What should I do?"
+
 → Check "Checklist" in SETUP_SUMMARY.md
 
 ---
@@ -219,4 +239,3 @@ Have you completed setup?
 **Created:** 2026-04-10  
 **Last Updated:** 2026-04-10  
 **Version:** 1.0.0
-

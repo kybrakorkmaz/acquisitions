@@ -9,7 +9,9 @@ Bu dizinde GitHub Actions CI/CD pipeline'ı hakkında tüm dökümanlar bulunmak
 ## 📚 Döküman Rehberi
 
 ### 1. **SETUP_SUMMARY.md** 🎯 (BURADAN BAŞLA!)
+
 **Tüm kurulumun özeti**
+
 - ✅ Oluşturulan dosyalar listesi
 - ✅ Workflow özet tablosu
 - ✅ Gerekli GitHub Secrets
@@ -22,7 +24,9 @@ Bu dizinde GitHub Actions CI/CD pipeline'ı hakkında tüm dökümanlar bulunmak
 ---
 
 ### 2. **CHEAT_SHEET.md** ⚡ (HIZLI REFERANS)
+
 **Hızlı komut ve linkler**
+
 - ✅ Dosya konumları
 - ✅ Sık kullanılan komutlar
 - ✅ Workflow matrix
@@ -35,7 +39,9 @@ Bu dizinde GitHub Actions CI/CD pipeline'ı hakkında tüm dökümanlar bulunmak
 ---
 
 ### 3. **WORKFLOWS_README.md** 📋 (DETAYLI AÇIKLAMA)
+
 **Her workflow'un tam açıklaması**
+
 - ✅ Workflow trigger koşulları
 - ✅ Yapılan işlemlerin adım adım açıklaması
 - ✅ Ortam değişkenleri
@@ -48,7 +54,9 @@ Bu dizinde GitHub Actions CI/CD pipeline'ı hakkında tüm dökümanlar bulunmak
 ---
 
 ### 4. **SECRETS_SETUP.md** 🔐 (SECRETS KURULUM)
+
 **GitHub Secrets'ı nasıl kuracağını öğren**
+
 - ✅ Docker Hub hesabı oluşturma
 - ✅ Personal Access Token (PAT) oluşturma
 - ✅ GitHub Secrets ekleme (web UI ve CLI)
@@ -61,6 +69,7 @@ Bu dizinde GitHub Actions CI/CD pipeline'ı hakkında tüm dökümanlar bulunmak
 ---
 
 ### 5. **INDEX.md** 📖 (ŞU DOSYA)
+
 **Bu belge - tüm dökümanların haritası**
 
 ---
@@ -68,6 +77,7 @@ Bu dizinde GitHub Actions CI/CD pipeline'ı hakkında tüm dökümanlar bulunmak
 ## 🚀 Başlangıç Yolculuğu
 
 ### İlk Defa Kurulum Yapıyorsan:
+
 ```
 1. SETUP_SUMMARY.md oku (tüm kurulumu anla)
 2. SECRETS_SETUP.md oku (Docker secrets ekle)
@@ -76,16 +86,19 @@ Bu dizinde GitHub Actions CI/CD pipeline'ı hakkında tüm dökümanlar bulunmak
 ```
 
 ### Hızlı Bir Şey Hatırlamak İstiyorsan:
+
 ```
 → CHEAT_SHEET.md aç
 ```
 
 ### Belirli Bir Workflow Hakkında Bilgi İstiyorsan:
+
 ```
 → WORKFLOWS_README.md oku
 ```
 
 ### Docker Push Sorun Yaşıyorsan:
+
 ```
 1. SECRETS_SETUP.md kontrol et
 2. CHEAT_SHEET.md'de "Docker Push Başarısız" bölümüne bak
@@ -97,12 +110,14 @@ Bu dizinde GitHub Actions CI/CD pipeline'ı hakkında tüm dökümanlar bulunmak
 ## 📊 Workflow Özet
 
 ### 1. lint-and-format.yml ✨
+
 - **Trigger:** Push/PR → main, staging
 - **Amaç:** ESLint + Prettier kontrol
 - **Duration:** ~2-3 dakika
 - **Başarısız olursa:** PR'ye yorum + workflow fail
 
 ### 2. tests.yml 🧪
+
 - **Trigger:** Push/PR → main, staging
 - **Amaç:** Jest testleri + coverage
 - **Duration:** ~3-5 dakika
@@ -110,6 +125,7 @@ Bu dizinde GitHub Actions CI/CD pipeline'ı hakkında tüm dökümanlar bulunmak
 - **Başarısız olursa:** PR'ye yorum + workflow fail
 
 ### 3. docker-build-and-push.yml 🐳
+
 - **Trigger:** Push → main (yalnız)
 - **Amaç:** Docker Hub'a imaj yükleme
 - **Duration:** ~5-10 dakika
@@ -120,9 +136,9 @@ Bu dizinde GitHub Actions CI/CD pipeline'ı hakkında tüm dökümanlar bulunmak
 
 ## 🔑 Gerekli Secrets
 
-| Secret | Gerekli | Nereden |
-|--------|---------|---------|
-| DOCKER_USERNAME | Evet (Docker build için) | Docker Hub profili |
+| Secret          | Gerekli                  | Nereden               |
+| --------------- | ------------------------ | --------------------- |
+| DOCKER_USERNAME | Evet (Docker build için) | Docker Hub profili    |
 | DOCKER_PASSWORD | Evet (Docker build için) | Docker Hub → Security |
 
 ---
@@ -182,15 +198,19 @@ Kurulum tamamladın mı?
 ## 🆘 Acil Yardım
 
 ### "Workflow çalışmıyor!"
+
 → SETUP_SUMMARY.md'deki "İlk Çalıştırma Adımları"na bak
 
 ### "Docker push başarısız!"
+
 → SECRETS_SETUP.md'de "Docker Hub Secrets Oluşturma"ya bak
 
 ### "Test başarısız!"
+
 → CHEAT_SHEET.md'de "Test Başarısız" bölümüne bak
 
-### "Ne yapmalıyım?" 
+### "Ne yapmalıyım?"
+
 → SETUP_SUMMARY.md'deki "Kontrol Listesi"ne bak
 
 ---
@@ -221,4 +241,3 @@ Kurulum tamamladın mı?
 **Oluşturma Tarihi:** 2026-04-10  
 **Son Güncelleme:** 2026-04-10  
 **Versiyon:** 1.0.0
-

@@ -8,6 +8,7 @@
 ## 🎯 Overview
 
 Permission-based access control has been implemented for user routes using middleware. This ensures:
+
 - ✅ Only admins can delete user accounts
 - ✅ Users can see only their own information (or admins can see anyone)
 - ✅ Clean separation of concerns with middleware
@@ -22,17 +23,20 @@ Permission-based access control has been implemented for user routes using middl
 Three middleware functions for permission management:
 
 #### `requireAuth`
+
 - Checks if user is authenticated
 - Returns 401 if `req.user` is missing
 - Allows any authenticated user to proceed
 
 #### `requireAdmin`
+
 - Checks if user is authenticated AND has admin role
 - Returns 401 if not authenticated
 - Returns 403 if not admin
 - Only admins can proceed
 
 #### `requireAuthOrAdmin`
+
 - Checks if user can access requested resource
 - Rule: Users can access only their own data
 - Rule: Admins can access any user's data
@@ -68,13 +72,14 @@ export const requireAuthOrAdmin = (req, res, next) => {
 Routes now use permission middleware:
 
 ```javascript
-router.get('/', fetchAllUsers);                    // No auth
-router.get('/:id', requireAuthOrAdmin, fetchUserById);     // Auth + own or admin
-router.put('/:id', requireAuthOrAdmin, updateUserData);    // Auth + own or admin
-router.delete('/:id', requireAdmin, deleteUserData);       // Admin only
+router.get('/', fetchAllUsers); // No auth
+router.get('/:id', requireAuthOrAdmin, fetchUserById); // Auth + own or admin
+router.put('/:id', requireAuthOrAdmin, updateUserData); // Auth + own or admin
+router.delete('/:id', requireAdmin, deleteUserData); // Admin only
 ```
 
 **Permissions:**
+
 - `GET /api/users` - No authentication required (public)
 - `GET /api/users/:id` - Requires auth (own user or admin)
 - `PUT /api/users/:id` - Requires auth (own user or admin)
@@ -87,6 +92,7 @@ router.delete('/:id', requireAdmin, deleteUserData);       // Admin only
 Controllers no longer check permissions - middleware handles it:
 
 #### `fetchUserById`
+
 ```javascript
 // Middleware already checked:
 // - User is authenticated
@@ -99,6 +105,7 @@ Controllers no longer check permissions - middleware handles it:
 ```
 
 #### `updateUserData`
+
 ```javascript
 // Middleware already checked authorization
 // Controller only:
@@ -109,6 +116,7 @@ Controllers no longer check permissions - middleware handles it:
 ```
 
 #### `deleteUserData`
+
 ```javascript
 // Middleware already checked admin role
 // Controller only:
@@ -121,12 +129,12 @@ Controllers no longer check permissions - middleware handles it:
 
 ## 🔒 Permission Rules
 
-| Endpoint | Method | Permission | Who Can Access |
-|----------|--------|-----------|-----------------|
-| /api/users | GET | None | Everyone |
-| /api/users/:id | GET | AuthOrAdmin | Own user OR admin |
-| /api/users/:id | PUT | AuthOrAdmin | Own user OR admin |
-| /api/users/:id | DELETE | Admin | Admin only |
+| Endpoint       | Method | Permission  | Who Can Access    |
+| -------------- | ------ | ----------- | ----------------- |
+| /api/users     | GET    | None        | Everyone          |
+| /api/users/:id | GET    | AuthOrAdmin | Own user OR admin |
+| /api/users/:id | PUT    | AuthOrAdmin | Own user OR admin |
+| /api/users/:id | DELETE | Admin       | Admin only        |
 
 ---
 
@@ -149,6 +157,7 @@ DELETE others |  ❌  |  ✅  |  ❌
 ## 🧪 Usage Examples
 
 ### Admin Deletes User
+
 ```bash
 # Admin deletes user with ID 5
 DELETE /api/users/5
@@ -158,6 +167,7 @@ Authorization: Bearer ADMIN_TOKEN
 ```
 
 ### Non-Admin Tries to Delete
+
 ```bash
 # Regular user tries to delete any user
 DELETE /api/users/5
@@ -167,6 +177,7 @@ Authorization: Bearer USER_TOKEN
 ```
 
 ### User Sees Own Info
+
 ```bash
 # User views their own profile
 GET /api/users/1
@@ -176,6 +187,7 @@ Authorization: Bearer USER_TOKEN (where user.id = 1)
 ```
 
 ### User Tries to See Others
+
 ```bash
 # User tries to view another user's profile
 GET /api/users/2
@@ -185,6 +197,7 @@ Authorization: Bearer USER_TOKEN (where user.id = 1)
 ```
 
 ### Admin Sees Any User
+
 ```bash
 # Admin views any user's profile
 GET /api/users/5
@@ -198,6 +211,7 @@ Authorization: Bearer ADMIN_TOKEN
 ## 📝 Error Responses
 
 ### 401 Unauthorized (Not Authenticated)
+
 ```json
 {
   "message": "Unauthorized. Please login first.",
@@ -206,6 +220,7 @@ Authorization: Bearer ADMIN_TOKEN
 ```
 
 ### 403 Forbidden (Not Authorized)
+
 ```json
 {
   "message": "Forbidden. Admin access required.",
@@ -225,12 +240,14 @@ Authorization: Bearer ADMIN_TOKEN
 ## 🔧 How Middleware Works
 
 ### Step 1: Request Arrives
+
 ```
 DELETE /api/users/5
 Authorization: Bearer USER_TOKEN
 ```
 
 ### Step 2: Middleware Checks
+
 ```javascript
 requireAdmin middleware executes:
   ✓ Is user authenticated? Check req.user
@@ -240,12 +257,14 @@ requireAdmin middleware executes:
 ```
 
 ### Step 3: Controller Executes
+
 ```javascript
 // Only reaches here if middleware passed
 deleteUserData() is called
 ```
 
 ### Step 4: Response Sent
+
 ```json
 {
   "message": "User 5 deleted successfully",
@@ -294,18 +313,22 @@ Controller (users.controller.js)
 ## 🚀 Key Benefits
 
 ✅ **Clean Code**
+
 - Controllers focus on business logic
 - Permission checks in dedicated middleware
 
 ✅ **Reusable**
+
 - Middleware used across multiple routes
 - Consistent permission rules
 
 ✅ **Maintainable**
+
 - Centralized permission logic
 - Easy to add/modify rules
 
 ✅ **Secure**
+
 - Permissions checked before controller
 - Proper error responses
 - All attempts logged
@@ -325,12 +348,14 @@ Controller (users.controller.js)
 ## ✅ Testing Checklist
 
 ### As Guest (No Authentication)
+
 - [ ] GET /api/users - 200 OK
 - [ ] GET /api/users/1 - 401 Unauthorized
 - [ ] PUT /api/users/1 - 401 Unauthorized
 - [ ] DELETE /api/users/1 - 401 Unauthorized
 
 ### As Regular User
+
 - [ ] GET /api/users - 200 OK
 - [ ] GET /api/users/[own_id] - 200 OK
 - [ ] GET /api/users/[other_id] - 403 Forbidden
@@ -339,6 +364,7 @@ Controller (users.controller.js)
 - [ ] DELETE /api/users/1 - 403 Forbidden
 
 ### As Admin User
+
 - [ ] GET /api/users - 200 OK
 - [ ] GET /api/users/1 - 200 OK (any user)
 - [ ] PUT /api/users/1 - 200 OK (any user)
@@ -348,4 +374,3 @@ Controller (users.controller.js)
 
 **Implementation Complete:** 2026-04-09  
 **Status:** ✅ Production Ready
-

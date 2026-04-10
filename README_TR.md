@@ -5,6 +5,7 @@ Backend Node.js Express uygulaması, Neon Database ile PostgreSQL desteğiyle bi
 ## 🚀 Hızlı Başlangıç
 
 ### Gereksinimler
+
 - Node.js 20.x+
 - Docker & Docker Compose (development için)
 - Git
@@ -12,22 +13,26 @@ Backend Node.js Express uygulaması, Neon Database ile PostgreSQL desteğiyle bi
 ### Local Kurulum
 
 1. **Repository'yi klonlayın**
+
 ```bash
 git clone https://github.com/kybrakorkmaz/acquisitions.git
 cd acquisitions
 ```
 
 2. **Bağımlılıkları yükleyin**
+
 ```bash
 npm install
 ```
 
 3. **Ortam değişkenlerini ayarlayın**
+
 ```bash
 cp .env.example .env.development
 ```
 
 4. **Development modunda çalıştırın**
+
 ```bash
 # Neon Local ve app ile Docker'da çalıştır
 npm run dev:docker
@@ -37,6 +42,7 @@ npm run dev
 ```
 
 5. **API'yi test edin**
+
 ```bash
 curl http://localhost:3000/health
 curl http://localhost:3000/api
@@ -47,21 +53,25 @@ curl http://localhost:3000/api
 ## 🐳 Docker Kurulumu
 
 ### Development (Neon Local)
+
 ```bash
 npm run dev:docker
 ```
 
 Bu komut:
+
 - Neon Local proxy'yi başlatır (otomatik ephemeral database branch oluşturur)
 - Node.js uygulamasını hot-reload ile başlatır
 - PostgreSQL veritabanını lokal olarak çalıştırır
 
 ### Production
+
 ```bash
 npm run prod:docker
 ```
 
 Bu komut:
+
 - Neon Cloud Database URL'sini kullanır
 - Üretim ortamında optimized imaj çalıştırır
 
@@ -99,6 +109,7 @@ npm run prod:docker        # Docker'da prod çalıştır
 ## 🔐 Ortam Değişkenleri
 
 ### Development (.env.development)
+
 ```
 NODE_ENV=development
 PORT=3000
@@ -107,6 +118,7 @@ NODE_TLS_REJECT_UNAUTHORIZED=0
 ```
 
 ### Production (.env.production)
+
 ```
 NODE_ENV=production
 PORT=3000
@@ -120,11 +132,13 @@ ARCJET_KEY=your-arcjet-key
 ## 🔗 API Endpoints
 
 ### Health Check
+
 ```
 GET /health
 ```
 
 ### Users
+
 ```
 GET /api/users              # Tüm kullanıcıları listele
 GET /api/users/:id          # Kullanıcı detayını al
@@ -134,6 +148,7 @@ DELETE /api/users/:id       # Kullanıcıyı sil (Admin)
 ```
 
 ### Authentication
+
 ```
 POST /auth/signup           # Kaydol
 POST /auth/signin           # Giriş yap
@@ -145,11 +160,13 @@ POST /auth/signout          # Çıkış yap
 ## 🧪 Testler
 
 ### Testleri Çalıştırma
+
 ```bash
 npm test
 ```
 
 ### Coverage Raporu
+
 ```bash
 npm test -- --coverage
 ```
@@ -163,6 +180,7 @@ Coverage raporları `coverage/` klasöründe bulunur.
 Bu proje 3 GitHub Actions workflow'u içermektedir:
 
 ### 1. **Lint and Format** ✨
+
 - **Trigger:** `main` ve `staging` branchlerine push/PR
 - **İşlem:** ESLint ve Prettier kontrol
 - **Başarısız olursa:** PR'ye yorum ile düzeltme önerileri sunar
@@ -170,6 +188,7 @@ Bu proje 3 GitHub Actions workflow'u içermektedir:
 Detaylar: [.github/workflows/lint-and-format.yml](.github/workflows/lint-and-format.yml)
 
 ### 2. **Tests** 🧪
+
 - **Trigger:** `main` ve `staging` branchlerine push/PR
 - **İşlem:** Jest testlerini çalıştırır, coverage raporu oluşturur
 - **Artifacts:** Coverage raporları 30 gün boyunca saklanır
@@ -177,6 +196,7 @@ Detaylar: [.github/workflows/lint-and-format.yml](.github/workflows/lint-and-for
 Detaylar: [.github/workflows/tests.yml](.github/workflows/tests.yml)
 
 ### 3. **Docker Build and Push** 🐳
+
 - **Trigger:** `main` branch'e push veya manuel (`workflow_dispatch`)
 - **İşlem:** Multi-platform Docker imaj oluşturur ve Docker Hub'a yükler
 - **Platformlar:** linux/amd64, linux/arm64
@@ -184,7 +204,9 @@ Detaylar: [.github/workflows/tests.yml](.github/workflows/tests.yml)
 Detaylar: [.github/workflows/docker-build-and-push.yml](.github/workflows/docker-build-and-push.yml)
 
 ### Workflow Kurulumu
+
 Workflow'ların çalışması için GitHub Secrets'ı ayarlamanız gerekir:
+
 - `DOCKER_USERNAME`: Docker Hub kullanıcı adı
 - `DOCKER_PASSWORD`: Docker Hub Personal Access Token
 
@@ -281,6 +303,7 @@ acquisitions/
 5. Pull Request açın
 
 Tüm PR'ler CI/CD pipeline'ından geçmelidir:
+
 - ✅ Linting
 - ✅ Formatting
 - ✅ Tests

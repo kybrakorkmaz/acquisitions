@@ -5,19 +5,23 @@ Bu proje 3 GitHub Actions CI/CD workflow'u içermektedir. Tüm workflow'lar `.gi
 ## 📋 Workflow'lar
 
 ### 1. **lint-and-format.yml** ✨
+
 Kod kalitesi ve formatlamayı kontrol eder.
 
 **Trigger:**
+
 - `main` ve `staging` branchlerine push işlemleri
 - `main` ve `staging` branchlerine pull request'ler
 
 **Yapılan İşlemler:**
+
 - ESLint ile kod stili kontrol edilir
 - Prettier ile kod formatı kontrol edilir
 - PR üzerinde otomatik yorum bırakır ve düzeltme önerileri sunar
 - Sorunlar bulunursa workflow başarısız olur
 
 **Komutlar:**
+
 ```bash
 npm run lint        # ESLint kontrolü
 npm run lint:fix    # ESLint otomatik düzeltme
@@ -28,13 +32,16 @@ npm run format:check # Prettier kontrol
 ---
 
 ### 2. **tests.yml** 🧪
+
 Testleri çalıştırır ve coverage raporları oluşturur.
 
 **Trigger:**
+
 - `main` ve `staging` branchlerine push işlemleri
 - `main` ve `staging` branchlerine pull request'ler
 
 **Yapılan İşlemler:**
+
 - Node.js 20.x ile testler çalıştırılır
 - PostgreSQL 16 servisi başlatılır
 - Test coverage raporları oluşturulur
@@ -43,6 +50,7 @@ Testleri çalıştırır ve coverage raporları oluşturur.
 - Test başarısızlıkları otomatik olarak bildirilir
 
 **Ortam Değişkenleri:**
+
 ```
 NODE_ENV: test
 NODE_OPTIONS: --experimental-vm-modules
@@ -50,6 +58,7 @@ DATABASE_URL: postgresql://user:password@localhost:5432/neondb
 ```
 
 **Komut:**
+
 ```bash
 npm test  # Testleri çalıştır (coverage ile)
 ```
@@ -57,13 +66,16 @@ npm test  # Testleri çalıştır (coverage ile)
 ---
 
 ### 3. **docker-build-and-push.yml** 🐳
+
 Docker imajı oluşturur ve Docker Hub'a yükler.
 
 **Trigger:**
+
 - `main` branchine push işlemleri
 - Manuel trigger (`workflow_dispatch`)
 
 **Yapılan İşlemler:**
+
 - Docker Buildx multi-platform desteğiyle yapılandırılır
 - Docker Hub'a giriş yapılır
 - Metadata çıkarılır (branch, commit SHA, latest, timestamp)
@@ -73,6 +85,7 @@ Docker imajı oluşturur ve Docker Hub'a yükler.
 - GitHub Summary'ye imaj bilgileri eklenir
 
 **Desteklenen Platformlar:**
+
 - `linux/amd64`
 - `linux/arm64`
 
@@ -84,7 +97,7 @@ Docker Build and Push workflow'u için aşağıdaki secrets'ı GitHub repository
 
 ### Settings → Secrets and variables → Actions
 
-1. **DOCKER_USERNAME** 
+1. **DOCKER_USERNAME**
    - Açıklama: Docker Hub kullanıcı adı
    - Örnek: `your-docker-username`
 
@@ -109,6 +122,7 @@ DOCKER_PASSWORD: your-pat-token
 ## 📊 Workflow Detayları
 
 ### Lint and Format Workflow
+
 ```
 ├── Node.js 20.x Kurulumu (npm cache ile)
 ├── Bağımlılık kurulumu (npm ci)
@@ -119,6 +133,7 @@ DOCKER_PASSWORD: your-pat-token
 ```
 
 ### Tests Workflow
+
 ```
 ├── PostgreSQL 16 servisi başlatma
 ├── Node.js 20.x Kurulumu (npm cache ile)
@@ -131,6 +146,7 @@ DOCKER_PASSWORD: your-pat-token
 ```
 
 ### Docker Build and Push Workflow
+
 ```
 ├── Docker Buildx setup
 ├── Docker Hub login
@@ -153,6 +169,7 @@ Workflow aşağıdaki etiketlerle imaj oluşturur:
 - `prod-YYYYMMDD-HHmmss` - Tarih ve saat damgası (örn: `prod-20260410-093045`)
 
 **Örnek:**
+
 ```
 your-username/acquisitions:main
 your-username/acquisitions:main-abc123def
@@ -174,6 +191,7 @@ your-username/acquisitions:prod-20260410-093045
 ## ⚡ Hızlı Başlangıç
 
 ### Local Test
+
 ```bash
 # Lint kontrol
 npm run lint
@@ -186,6 +204,7 @@ npm test
 ```
 
 ### Docker İmaj Oluştur
+
 ```bash
 # Dockerfile'dan imaj oluştur
 docker build -t your-username/acquisitions:latest .
@@ -209,14 +228,16 @@ docker buildx build --platform linux/amd64,linux/arm64 -t your-username/acquisit
 ## 🆘 Sorun Giderme
 
 ### Docker Push Başarısız Oluyorsa
+
 - `DOCKER_USERNAME` ve `DOCKER_PASSWORD` secrets'inin doğru ayarlanmış olup olmadığını kontrol edin
 - Docker Hub'da Personal Access Token oluşturduğunuzdan emin olun
 
 ### Testler Başarısız Oluyorsa
+
 - Yerel makinada `npm test` çalıştırarak sorunları çözün
 - Coverage raporlarını indirerek detay inceyin
 
 ### Lint/Format Başarısız Oluyorsa
+
 - Local'de `npm run lint:fix` ve `npm run format` çalıştırın
 - Değişiklikleri commit edin
-

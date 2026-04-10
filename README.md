@@ -9,6 +9,7 @@ A Node.js Express backend application with PostgreSQL support via Neon Database.
 ## 🚀 Quick Start
 
 ### Requirements
+
 - Node.js 20.x+
 - Docker & Docker Compose (for development)
 - Git
@@ -16,22 +17,26 @@ A Node.js Express backend application with PostgreSQL support via Neon Database.
 ### Local Setup
 
 1. **Clone the repository**
+
 ```bash
 git clone https://github.com/kybrakorkmaz/acquisitions.git
 cd acquisitions
 ```
 
 2. **Install dependencies**
+
 ```bash
 npm install
 ```
 
 3. **Set up environment variables**
+
 ```bash
 cp .env.example .env.development
 ```
 
 4. **Run in development mode**
+
 ```bash
 # Run with Docker (Neon Local + App)
 npm run dev:docker
@@ -41,6 +46,7 @@ npm run dev
 ```
 
 5. **Test the API**
+
 ```bash
 curl http://localhost:3000/health
 curl http://localhost:3000/api
@@ -51,21 +57,25 @@ curl http://localhost:3000/api
 ## 🐳 Docker Setup
 
 ### Development (Neon Local)
+
 ```bash
 npm run dev:docker
 ```
 
 This command:
+
 - Starts Neon Local proxy (auto-creates ephemeral database branch)
 - Runs Node.js app with hot-reload
 - Runs PostgreSQL database locally
 
 ### Production
+
 ```bash
 npm run prod:docker
 ```
 
 This command:
+
 - Uses Neon Cloud Database URL
 - Runs optimized image in production environment
 
@@ -103,6 +113,7 @@ npm run prod:docker        # Run prod with Docker
 ## 🔐 Environment Variables
 
 ### Development (.env.development)
+
 ```
 NODE_ENV=development
 PORT=3000
@@ -111,6 +122,7 @@ NODE_TLS_REJECT_UNAUTHORIZED=0
 ```
 
 ### Production (.env.production)
+
 ```
 NODE_ENV=production
 PORT=3000
@@ -124,11 +136,13 @@ ARCJET_KEY=your-arcjet-key
 ## 🔗 API Endpoints
 
 ### Health Check
+
 ```
 GET /health
 ```
 
 ### Users
+
 ```
 GET /api/users              # Get all users
 GET /api/users/:id          # Get user by ID
@@ -138,6 +152,7 @@ DELETE /api/users/:id       # Delete user (Admin only)
 ```
 
 ### Authentication
+
 ```
 POST /auth/signup           # Sign up
 POST /auth/signin           # Sign in
@@ -149,11 +164,13 @@ POST /auth/signout          # Sign out
 ## 🧪 Testing
 
 ### Run Tests
+
 ```bash
 npm test
 ```
 
 ### Generate Coverage Report
+
 ```bash
 npm test -- --coverage
 ```
@@ -167,6 +184,7 @@ Coverage reports are in the `coverage/` directory.
 This project includes 3 GitHub Actions workflows:
 
 ### 1. **Lint and Format** ✨
+
 - **Trigger:** Push/PR to `main` and `staging` branches
 - **Actions:** ESLint and Prettier checks
 - **On Failure:** Posts suggestions on PR as comments
@@ -174,6 +192,7 @@ This project includes 3 GitHub Actions workflows:
 Details: [.github/workflows/lint-and-format.yml](.github/workflows/lint-and-format.yml)
 
 ### 2. **Tests** 🧪
+
 - **Trigger:** Push/PR to `main` and `staging` branches
 - **Actions:** Runs Jest tests and generates coverage report
 - **Artifacts:** Coverage reports retained for 30 days
@@ -181,6 +200,7 @@ Details: [.github/workflows/lint-and-format.yml](.github/workflows/lint-and-form
 Details: [.github/workflows/tests.yml](.github/workflows/tests.yml)
 
 ### 3. **Docker Build and Push** 🐳
+
 - **Trigger:** Push to `main` branch or manual trigger
 - **Actions:** Builds multi-platform Docker image and pushes to Docker Hub
 - **Platforms:** linux/amd64, linux/arm64
@@ -188,7 +208,9 @@ Details: [.github/workflows/tests.yml](.github/workflows/tests.yml)
 Details: [.github/workflows/docker-build-and-push.yml](.github/workflows/docker-build-and-push.yml)
 
 ### Workflow Setup
+
 To run workflows, configure GitHub Secrets:
+
 - `DOCKER_USERNAME`: Docker Hub username
 - `DOCKER_PASSWORD`: Docker Hub Personal Access Token
 
@@ -285,6 +307,7 @@ acquisitions/
 5. Open a Pull Request
 
 All PRs must pass the CI/CD pipeline:
+
 - ✅ Linting
 - ✅ Formatting
 - ✅ Tests
@@ -320,4 +343,3 @@ ISC
 
 - **English** - You are here
 - **[Türkçe](README_TR.md)** - Türkçe versiyonu okumak için tıklayın
-

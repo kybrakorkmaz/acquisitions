@@ -25,6 +25,7 @@ acquisitions/
 ## ⚡ Hızlı Komutlar
 
 ### Local Test
+
 ```bash
 npm run lint          # ESLint kontrol
 npm run lint:fix      # ESLint düzeltme
@@ -35,12 +36,14 @@ npm test -- --coverage  # Testleri coverage ile çalıştır
 ```
 
 ### Docker
+
 ```bash
 npm run dev:docker    # Development (Neon Local)
 npm run prod:docker   # Production
 ```
 
 ### Database
+
 ```bash
 npm run db:generate   # Migration oluştur
 npm run db:migrate    # Migration uygula
@@ -60,6 +63,7 @@ DOCKER_PASSWORD = your-docker-pat-token
 ```
 
 **Token nasıl oluşturulur?**
+
 1. Docker Hub → Account Settings → Security
 2. New Access Token → Generate
 3. Token'ı kopyala → GitHub Secrets'a yapıştır
@@ -68,28 +72,31 @@ DOCKER_PASSWORD = your-docker-pat-token
 
 ## 📊 Workflow Matrix
 
-| Dosya | Trigger | Node | Cache | Cache? |
-|-------|---------|------|-------|--------|
-| lint-and-format.yml | push/PR (main,staging) | 20.x | npm | ✅ |
-| tests.yml | push/PR (main,staging) | 20.x | npm | ✅ |
-| docker-build-and-push.yml | push (main) + manual | - | gha | ✅ |
+| Dosya                     | Trigger                | Node | Cache | Cache? |
+| ------------------------- | ---------------------- | ---- | ----- | ------ |
+| lint-and-format.yml       | push/PR (main,staging) | 20.x | npm   | ✅     |
+| tests.yml                 | push/PR (main,staging) | 20.x | npm   | ✅     |
+| docker-build-and-push.yml | push (main) + manual   | -    | gha   | ✅     |
 
 ---
 
 ## 🎯 Her Workflow'un Yaptığı
 
 ### 1. lint-and-format.yml
+
 ```
 ESLint → Prettier → PR Comment → Fail/Pass
 ```
 
 ### 2. tests.yml
+
 ```
 PostgreSQL ↓
 npm test --coverage → Artifacts → Summary → Comment → Fail/Pass
 ```
 
 ### 3. docker-build-and-push.yml
+
 ```
 Docker Buildx → amd64 + arm64 → Docker Hub → Summary
 ```
@@ -99,6 +106,7 @@ Docker Buildx → amd64 + arm64 → Docker Hub → Summary
 ## 🔍 Workflow'u Debug Etme
 
 ### GitHub Actions Dashboard
+
 ```
 1. Repository → Actions
 2. Workflow seç → Run seç
@@ -106,11 +114,13 @@ Docker Buildx → amd64 + arm64 → Docker Hub → Summary
 ```
 
 ### PR Comment Görmek İçin
+
 ```
 PR → Conversation sekmesi → Bot comments
 ```
 
 ### Artifacts İndirmek
+
 ```
 Run details → Artifacts → Download coverage-report
 ```
@@ -120,6 +130,7 @@ Run details → Artifacts → Download coverage-report
 ## 🆘 Yaygın Sorunlar
 
 ### Docker Push Başarısız
+
 ```
 Kontrol et:
 - DOCKER_USERNAME secret doğru mu?
@@ -129,6 +140,7 @@ Kontrol et:
 ```
 
 ### Test Başarısız
+
 ```
 1. Local'de test çalıştır: npm test
 2. Coverage raporu kontrol et: coverage/
@@ -136,6 +148,7 @@ Kontrol et:
 ```
 
 ### Linting Başarısız
+
 ```
 1. Fix et: npm run lint:fix
 2. Format et: npm run format
@@ -207,6 +220,7 @@ git push origin main
 ## 🚨 Workflow İptal Etme
 
 GitHub Actions UI'da:
+
 ```
 1. Actions → Active workflow
 2. Sağ tarafta "..." menu
@@ -218,6 +232,7 @@ GitHub Actions UI'da:
 ## 📞 Destek
 
 Sorun olursa:
+
 1. GitHub Actions logs'ı kontrol et
 2. WORKFLOWS_README.md oku
 3. SECRETS_SETUP.md kontrol et
@@ -226,4 +241,3 @@ Sorun olursa:
 ---
 
 **Last Updated:** 2026-04-10
-

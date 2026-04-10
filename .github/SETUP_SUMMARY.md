@@ -22,11 +22,11 @@ Başarılı şekilde 3 GitHub Actions workflow'u oluşturulmuştur. İşte tüm 
 
 ## 🎯 Workflow Özet Tablosu
 
-| Workflow | Trigger | Node.js | Cache | Özellikler |
-|----------|---------|---------|-------|-----------|
-| **lint-and-format** | push/PR (main, staging) | 20.x | ✅ | ESLint, Prettier, PR comments |
-| **tests** | push/PR (main, staging) | 20.x | ✅ | Jest, Coverage, PostgreSQL, Artifacts (30 days) |
-| **docker-build-and-push** | push (main), manual | - | ✅ | Buildx, Multi-platform (amd64, arm64), Metadata |
+| Workflow                  | Trigger                 | Node.js | Cache | Özellikler                                      |
+| ------------------------- | ----------------------- | ------- | ----- | ----------------------------------------------- |
+| **lint-and-format**       | push/PR (main, staging) | 20.x    | ✅    | ESLint, Prettier, PR comments                   |
+| **tests**                 | push/PR (main, staging) | 20.x    | ✅    | Jest, Coverage, PostgreSQL, Artifacts (30 days) |
+| **docker-build-and-push** | push (main), manual     | -       | ✅    | Buildx, Multi-platform (amd64, arm64), Metadata |
 
 ---
 
@@ -52,12 +52,14 @@ DOCKER_PASSWORD = your-docker-pat-token
 **Amaç:** Kod kalitesi ve formatını kontrol eder
 
 **Trigger Koşulları:**
+
 ```yaml
 - Push to main veya staging branch
 - Pull request to main veya staging branch
 ```
 
 **Yapılan İşlemler:**
+
 1. ✅ Checkout code
 2. ✅ Node.js 20.x setup (npm cache ile)
 3. ✅ Dependencies kurulumu (`npm ci`)
@@ -67,6 +69,7 @@ DOCKER_PASSWORD = your-docker-pat-token
 7. ✅ Workflow başarısız olması (sorun varsa)
 
 **Komut Önerileri:**
+
 - `npm run lint:fix` - ESLint otomatik düzeltme
 - `npm run format` - Prettier otomatik formatla
 
@@ -77,15 +80,18 @@ DOCKER_PASSWORD = your-docker-pat-token
 **Amaç:** Testleri çalıştırır ve coverage raporu oluşturur
 
 **Trigger Koşulları:**
+
 ```yaml
 - Push to main veya staging branch
 - Pull request to main veya staging branch
 ```
 
 **Servisleri:**
+
 - PostgreSQL 16 (localhost:5432)
 
 **Ortam Değişkenleri:**
+
 ```
 NODE_ENV=test
 NODE_OPTIONS=--experimental-vm-modules
@@ -93,6 +99,7 @@ DATABASE_URL=postgresql://neondb_owner:test_password@localhost:5432/neondb
 ```
 
 **Yapılan İşlemler:**
+
 1. ✅ Checkout code
 2. ✅ Node.js 20.x setup (npm cache ile)
 3. ✅ PostgreSQL 16 servisini başlat
@@ -103,6 +110,7 @@ DATABASE_URL=postgresql://neondb_owner:test_password@localhost:5432/neondb
 8. ✅ PR'ye yorum (test başarısız olursa)
 
 **Artifacts:**
+
 - `coverage-report/` - 30 gün boyunca saklanır
 - GitHub Actions run detaylarından indirilebilir
 
@@ -113,12 +121,14 @@ DATABASE_URL=postgresql://neondb_owner:test_password@localhost:5432/neondb
 **Amaç:** Docker imajı oluşturur ve Docker Hub'a yükler
 
 **Trigger Koşulları:**
+
 ```yaml
 - Push to main branch
 - Manual trigger (workflow_dispatch)
 ```
 
 **Yapılan İşlemler:**
+
 1. ✅ Checkout code
 2. ✅ Docker Buildx kurulumu
 3. ✅ Docker Hub login (secrets kullanarak)
@@ -128,16 +138,19 @@ DATABASE_URL=postgresql://neondb_owner:test_password@localhost:5432/neondb
 7. ✅ GitHub Summary'ye bilgi yazma
 
 **Desteklenen Platformlar:**
+
 - `linux/amd64` (Intel/AMD)
 - `linux/arm64` (Apple Silicon, ARM64 servers)
 
 **Docker Etiketleri:**
+
 - Branch adı (örn: `main`)
 - Commit SHA (örn: `main-abc123def`)
 - `latest` (en son)
 - Timestamp (örn: `prod-20260410-093045`)
 
 **Örnek İmaj:**
+
 ```
 your-username/acquisitions:main
 your-username/acquisitions:main-abc123def
@@ -150,6 +163,7 @@ your-username/acquisitions:prod-20260410-093045
 ## 🚀 İlk Çalıştırma Adımları
 
 ### Adım 1: GitHub Secrets Ekleyin
+
 ```
 Settings > Secrets and variables > Actions
 + New repository secret
@@ -158,6 +172,7 @@ Settings > Secrets and variables > Actions
 ```
 
 ### Adım 2: Test Edin
+
 ```bash
 # Local'de tüm kontrolleri çalıştırın
 npm run lint:fix
@@ -166,6 +181,7 @@ npm test
 ```
 
 ### Adım 3: Commit & Push
+
 ```bash
 git add .
 git commit -m "Add GitHub Actions workflows"
@@ -173,6 +189,7 @@ git push origin main
 ```
 
 ### Adım 4: GitHub Actions Dashboard'ı İzleyin
+
 1. Repository'nize gidin
 2. `Actions` sekmesi
 3. Workflow'ların çalışmasını izleyin
@@ -182,12 +199,14 @@ git push origin main
 ## ✨ Workflow Features
 
 ### lint-and-format.yml Features:
+
 - ✅ Node.js caching (hızlı başlatma)
 - ✅ `continue-on-error: true` (her iki kontrol de çalışır)
 - ✅ Otomatik PR comments
 - ✅ Açıkça hata mesajları
 
 ### tests.yml Features:
+
 - ✅ PostgreSQL servis entegrasyonu
 - ✅ Coverage raporları (artifact)
 - ✅ GitHub Step Summary
@@ -195,6 +214,7 @@ git push origin main
 - ✅ Otomatik PR comments
 
 ### docker-build-and-push.yml Features:
+
 - ✅ Multi-platform build (Buildx)
 - ✅ GitHub Actions caching
 - ✅ Metadata action (tags otomatik)
@@ -237,7 +257,7 @@ Başarılı şekilde 3 GitHub Actions workflow'u ayarladınız. Artık:
 
 ✅ Her push/PR'de otomatik linting ve formatting kontrol  
 ✅ Her push/PR'de otomatik testler  
-✅ Her main push'ta Docker imajı oluşturma ve Docker Hub'a yükleme  
+✅ Her main push'ta Docker imajı oluşturma ve Docker Hub'a yükleme
 
 **Happy CI/CD! 🚀**
 
@@ -245,5 +265,4 @@ Başarılı şekilde 3 GitHub Actions workflow'u ayarladınız. Artık:
 
 **Oluşturma Tarihi:** 2026-04-10
 **Node.js Version:** 20.x
-**GitHub Actions Version:** v4 (checkout, setup-node, upload-artifact, github-script, docker/*)
-
+**GitHub Actions Version:** v4 (checkout, setup-node, upload-artifact, github-script, docker/\*)

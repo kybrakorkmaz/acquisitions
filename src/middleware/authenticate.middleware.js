@@ -25,7 +25,7 @@ export const authenticate = (req, res, next) => {
       logger.debug('No token found in cookies', {
         path: req.path,
         method: req.method,
-        ip: req.ip
+        ip: req.ip,
       });
       return next();
     }
@@ -37,7 +37,7 @@ export const authenticate = (req, res, next) => {
     req.user = {
       id: decoded.id,
       email: decoded.email,
-      role: decoded.role
+      role: decoded.role,
     };
 
     logger.info('User authenticated successfully', {
@@ -45,7 +45,7 @@ export const authenticate = (req, res, next) => {
       userEmail: req.user.email,
       userRole: req.user.role,
       path: req.path,
-      method: req.method
+      method: req.method,
     });
 
     next();
@@ -54,7 +54,7 @@ export const authenticate = (req, res, next) => {
       error: error.message,
       path: req.path,
       method: req.method,
-      ip: req.ip
+      ip: req.ip,
     });
 
     // Token is invalid/expired, continue to next middleware
@@ -84,11 +84,11 @@ export const authenticateStrict = (req, res, next) => {
       logger.warn('Authentication failed - no token provided', {
         path: req.path,
         method: req.method,
-        ip: req.ip
+        ip: req.ip,
       });
       return res.status(401).json({
         message: 'Unauthorized. No authentication token provided.',
-        error: 'MISSING_TOKEN'
+        error: 'MISSING_TOKEN',
       });
     }
 
@@ -99,7 +99,7 @@ export const authenticateStrict = (req, res, next) => {
     req.user = {
       id: decoded.id,
       email: decoded.email,
-      role: decoded.role
+      role: decoded.role,
     };
 
     logger.info('User authenticated successfully', {
@@ -107,7 +107,7 @@ export const authenticateStrict = (req, res, next) => {
       userEmail: req.user.email,
       userRole: req.user.role,
       path: req.path,
-      method: req.method
+      method: req.method,
     });
 
     next();
@@ -116,16 +116,15 @@ export const authenticateStrict = (req, res, next) => {
       error: error.message,
       path: req.path,
       method: req.method,
-      ip: req.ip
+      ip: req.ip,
     });
 
     // Token is invalid/expired
     return res.status(401).json({
       message: 'Unauthorized. Invalid or expired authentication token.',
-      error: 'INVALID_TOKEN'
+      error: 'INVALID_TOKEN',
     });
   }
 };
 
 export default authenticate;
-

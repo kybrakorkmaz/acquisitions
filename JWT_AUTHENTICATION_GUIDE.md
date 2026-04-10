@@ -7,6 +7,7 @@ Complete JWT authentication middleware system for Express.js with HTTP-only cook
 ## 📋 Overview
 
 This implementation provides:
+
 - ✅ JWT token reading from HTTP-only cookies
 - ✅ Token verification and user data attachment to `req.user`
 - ✅ Two authentication modes: permissive (global) and strict (route-specific)
@@ -18,12 +19,12 @@ This implementation provides:
 
 ## 🔧 Files Modified/Created
 
-| File | Status | Change |
-|------|--------|--------|
-| `src/utils/cookies.js` | ✅ Fixed | Changed `req.cookie[name]` → `req.cookies[name]` |
-| `src/middleware/authenticate.middleware.js` | ✅ Created | New authentication middleware (2 variants) |
-| `src/app.js` | ✅ Updated | Added global `authenticate` middleware |
-| `src/routes/users.routes.js` | ✅ Updated | Added `authenticateStrict` to protected routes |
+| File                                        | Status     | Change                                           |
+| ------------------------------------------- | ---------- | ------------------------------------------------ |
+| `src/utils/cookies.js`                      | ✅ Fixed   | Changed `req.cookie[name]` → `req.cookies[name]` |
+| `src/middleware/authenticate.middleware.js` | ✅ Created | New authentication middleware (2 variants)       |
+| `src/app.js`                                | ✅ Updated | Added global `authenticate` middleware           |
+| `src/routes/users.routes.js`                | ✅ Updated | Added `authenticateStrict` to protected routes   |
 
 ---
 
@@ -35,14 +36,14 @@ This implementation provides:
 
 ```javascript
 // ❌ BEFORE (Line 15)
-get: (req, name)=>{
-  return req.cookie[name];  // WRONG: singular "cookie"
-}
+get: (req, name) => {
+  return req.cookie[name]; // WRONG: singular "cookie"
+};
 
 // ✅ AFTER (Line 15)
-get: (req, name)=>{
-  return req.cookies[name];  // CORRECT: plural "cookies"
-}
+get: (req, name) => {
+  return req.cookies[name]; // CORRECT: plural "cookies"
+};
 ```
 
 **Why:** Express's `cookie-parser` middleware creates `req.cookies` (plural) object, not `req.cookie`.
@@ -56,24 +57,25 @@ get: (req, name)=>{
 #### Two Middleware Functions:
 
 **A. `authenticate` - Permissive Mode (Global)**
+
 ```javascript
 export const authenticate = (req, res, next) => {
   // Try to read JWT from cookies
   const token = cookies.get(req, 'token');
-  
+
   // If no token, just continue (don't reject)
   if (!token) {
     return next();
   }
-  
+
   // If token exists, verify and attach to req.user
   const decoded = jwttoken.verify(token);
   req.user = {
     id: decoded.id,
     email: decoded.email,
-    role: decoded.role
+    role: decoded.role,
   };
-  
+
   next();
 };
 ```
@@ -81,27 +83,28 @@ export const authenticate = (req, res, next) => {
 **Use Case:** Global middleware - allows public routes to work, but authenticated users get `req.user` attached.
 
 **B. `authenticateStrict` - Strict Mode (Route-Specific)**
+
 ```javascript
 export const authenticateStrict = (req, res, next) => {
   // Try to read JWT from cookies
   const token = cookies.get(req, 'token');
-  
+
   // If no token, reject immediately
   if (!token) {
     return res.status(401).json({
       message: 'Unauthorized. No authentication token provided.',
-      error: 'MISSING_TOKEN'
+      error: 'MISSING_TOKEN',
     });
   }
-  
+
   // Verify and attach to req.user
   const decoded = jwttoken.verify(token);
   req.user = {
     id: decoded.id,
     email: decoded.email,
-    role: decoded.role
+    role: decoded.role,
   };
-  
+
   next();
 };
 ```
@@ -128,6 +131,7 @@ app.use('/api/users', userRoutes);
 ```
 
 **Execution Order:**
+
 1. `helmet()` - Security headers
 2. `cors()` - CORS handling
 3. `express.json()` - JSON parsing
@@ -144,8 +148,11 @@ app.use('/api/users', userRoutes);
 **File:** `src/routes/users.routes.js` (Updated)
 
 ```javascript
-import {authenticateStrict} from "#middleware/authenticate.middleware.js";
-import {requireAdmin, requireAuthOrAdmin} from "#middleware/permissions.middleware.js";
+import { authenticateStrict } from '#middleware/authenticate.middleware.js';
+import {
+  requireAdmin,
+  requireAuthOrAdmin,
+} from '#middleware/permissions.middleware.js';
 
 // Get user by ID - requires authentication + authorization
 router.get('/:id', authenticateStrict, requireAuthOrAdmin, fetchUserById);
@@ -158,6 +165,7 @@ router.delete('/:id', authenticateStrict, requireAdmin, deleteUserData);
 ```
 
 **Middleware Execution Order:**
+
 1. `authenticateStrict` - Requires valid JWT in cookie, attaches `req.user`
 2. `requireAuthOrAdmin` - Checks if user owns data or is admin
 3. `requireAdmin` - Checks if user is admin
@@ -226,6 +234,7 @@ http POST http://localhost:3000/api/auth/sign-up \
 ```
 
 **Response:**
+
 ```json
 {
   "message": "User registered",
@@ -250,6 +259,7 @@ http GET http://localhost:3000/api/users/1
 ```
 
 **Response:**
+
 ```json
 {
   "id": 1,
@@ -269,6 +279,7 @@ http GET http://localhost:3000/api/users/2
 ```
 
 **Response (403 Forbidden):**
+
 ```json
 {
   "message": "Forbidden. You can only access your own information.",
@@ -286,6 +297,7 @@ http PUT http://localhost:3000/api/users/1 \
 ```
 
 **Response:**
+
 ```json
 {
   "message": "User updated successfully",
@@ -307,6 +319,7 @@ http DELETE http://localhost:3000/api/users/1
 ```
 
 **Response (403 Forbidden):**
+
 ```json
 {
   "message": "Forbidden. Admin access required.",
@@ -323,6 +336,7 @@ http POST http://localhost:3000/api/auth/sign-out
 ```
 
 **Response:**
+
 ```json
 {
   "message": "User signed out successfully"
@@ -341,6 +355,7 @@ http GET http://localhost:3000/api/users/1
 ```
 
 **Response (401 Unauthorized):**
+
 ```json
 {
   "message": "Unauthorized. No authentication token provided.",
@@ -366,12 +381,13 @@ Postman usually handles cookies automatically, but to debug:
 
 ```javascript
 // In Postman request, go to "Tests" tab
-pm.globals.set("token", pm.response.json().token);
+pm.globals.set('token', pm.response.json().token);
 ```
 
 ### Requests:
 
 **1. Sign Up**
+
 ```
 POST {{base_url}}/api/auth/sign-up
 Headers:
@@ -387,6 +403,7 @@ Body:
 ```
 
 **2. Get Own User**
+
 ```
 GET {{base_url}}/api/users/1
 
@@ -397,6 +414,7 @@ pm.test("Status is 200", () => {
 ```
 
 **3. Update User**
+
 ```
 PUT {{base_url}}/api/users/1
 Body:
@@ -406,6 +424,7 @@ Body:
 ```
 
 **4. Sign Out**
+
 ```
 POST {{base_url}}/api/auth/sign-out
 ```
@@ -459,61 +478,70 @@ POST {{base_url}}/api/auth/sign-out
 
 ## ✅ Security Features
 
-| Feature | Implementation |
-|---------|-----------------|
-| **HTTP-Only Cookie** | `httpOnly: true` - JS cannot access |
-| **Secure Flag** | `secure: true` in production - HTTPS only |
-| **SameSite** | `sameSite: 'strict'` - CSRF protection |
-| **Token Expiration** | `expiresIn: '1d'` - 24-hour token lifetime |
-| **Token Verification** | JWT signature validated with secret |
-| **Role-Based Access** | Different permissions for admin/user |
-| **Request Logging** | All attempts logged with IP/timestamp |
+| Feature                | Implementation                             |
+| ---------------------- | ------------------------------------------ |
+| **HTTP-Only Cookie**   | `httpOnly: true` - JS cannot access        |
+| **Secure Flag**        | `secure: true` in production - HTTPS only  |
+| **SameSite**           | `sameSite: 'strict'` - CSRF protection     |
+| **Token Expiration**   | `expiresIn: '1d'` - 24-hour token lifetime |
+| **Token Verification** | JWT signature validated with secret        |
+| **Role-Based Access**  | Different permissions for admin/user       |
+| **Request Logging**    | All attempts logged with IP/timestamp      |
 
 ---
 
 ## 🚀 Best Practices Implemented
 
 ✅ **Separation of Concerns**
-  - Authentication (decode token)
-  - Authorization (check permissions)
+
+- Authentication (decode token)
+- Authorization (check permissions)
 
 ✅ **Error Handling**
-  - Graceful error messages
-  - Proper HTTP status codes
+
+- Graceful error messages
+- Proper HTTP status codes
 
 ✅ **Logging**
-  - Debug info for no token
-  - Info for successful auth
-  - Warnings for invalid tokens
-  - Errors for system issues
+
+- Debug info for no token
+- Info for successful auth
+- Warnings for invalid tokens
+- Errors for system issues
 
 ✅ **Modularity**
-  - Reusable middleware functions
-  - Easy to apply globally or per-route
+
+- Reusable middleware functions
+- Easy to apply globally or per-route
 
 ✅ **Security**
-  - HTTP-only cookies
-  - CSRF protection
-  - Token expiration
-  - Role-based access control
+
+- HTTP-only cookies
+- CSRF protection
+- Token expiration
+- Role-based access control
 
 ---
 
 ## ⚠️ Common Issues & Solutions
 
 ### Issue 1: `Cannot read property 'id' of undefined`
+
 **Cause:** `req.user` is undefined  
 **Solution:** Check if `authenticateStrict` middleware is applied before accessing `req.user`
 
 ### Issue 2: Token is always invalid
+
 **Cause:** Secret key mismatch  
 **Solution:** Ensure same `JWT_SECRET` used in sign/verify
 
 ### Issue 3: Cookie not being set
+
 **Cause:** Missing `cookieParser()` middleware  
 **Solution:** Verify `cookieParser()` is applied before routes
 
 ### Issue 4: Can't access cookie in JavaScript
+
 **Expected:** JS shouldn't access HTTP-only cookies  
 **Why:** Security feature to prevent XSS attacks
 
@@ -546,16 +574,15 @@ src/
 ## 🎯 Summary
 
 **What Was Fixed:**
+
 1. ✅ `cookies.js` - Fixed typo `req.cookie` → `req.cookies`
 
-**What Was Created:**
-2. ✅ `authenticate.middleware.js` - JWT middleware (2 variants)
+**What Was Created:** 2. ✅ `authenticate.middleware.js` - JWT middleware (2 variants)
 
-**What Was Updated:**
-3. ✅ `app.js` - Added global authentication
-4. ✅ `users.routes.js` - Added strict authentication to protected routes
+**What Was Updated:** 3. ✅ `app.js` - Added global authentication 4. ✅ `users.routes.js` - Added strict authentication to protected routes
 
 **Result:**
+
 - JWT tokens are properly read from HTTP-only cookies
 - `req.user` is correctly populated in protected routes
 - Role-based authorization works as expected
@@ -565,4 +592,3 @@ src/
 ---
 
 **Status:** ✅ **COMPLETE & TESTED**
-

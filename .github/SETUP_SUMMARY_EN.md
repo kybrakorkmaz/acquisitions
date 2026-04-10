@@ -22,11 +22,11 @@
 
 ## 🎯 Workflow Summary Table
 
-| Workflow | Trigger | Node.js | Cache | Features |
-|----------|---------|---------|-------|----------|
-| **lint-and-format** | push/PR (main, staging) | 20.x | ✅ | ESLint, Prettier, PR comments |
-| **tests** | push/PR (main, staging) | 20.x | ✅ | Jest, Coverage, PostgreSQL, Artifacts (30 days) |
-| **docker-build-and-push** | push (main), manual | - | ✅ | Buildx, Multi-platform (amd64, arm64), Metadata |
+| Workflow                  | Trigger                 | Node.js | Cache | Features                                        |
+| ------------------------- | ----------------------- | ------- | ----- | ----------------------------------------------- |
+| **lint-and-format**       | push/PR (main, staging) | 20.x    | ✅    | ESLint, Prettier, PR comments                   |
+| **tests**                 | push/PR (main, staging) | 20.x    | ✅    | Jest, Coverage, PostgreSQL, Artifacts (30 days) |
+| **docker-build-and-push** | push (main), manual     | -       | ✅    | Buildx, Multi-platform (amd64, arm64), Metadata |
 
 ---
 
@@ -52,12 +52,14 @@ DOCKER_PASSWORD = your-docker-pat-token
 **Purpose:** Checks code quality and formatting
 
 **Trigger Conditions:**
+
 ```yaml
 - Push to main or staging branch
 - Pull request to main or staging branch
 ```
 
 **Actions Performed:**
+
 1. ✅ Checkout code
 2. ✅ Node.js 20.x setup (with npm cache)
 3. ✅ Install dependencies (`npm ci`)
@@ -67,6 +69,7 @@ DOCKER_PASSWORD = your-docker-pat-token
 7. ✅ Workflow fails (if issues found)
 
 **Suggested Commands:**
+
 - `npm run lint:fix` - ESLint auto-fix
 - `npm run format` - Prettier auto-format
 
@@ -77,15 +80,18 @@ DOCKER_PASSWORD = your-docker-pat-token
 **Purpose:** Runs tests and generates coverage report
 
 **Trigger Conditions:**
+
 ```yaml
 - Push to main or staging branch
 - Pull request to main or staging branch
 ```
 
 **Services:**
+
 - PostgreSQL 16 (localhost:5432)
 
 **Environment Variables:**
+
 ```
 NODE_ENV=test
 NODE_OPTIONS=--experimental-vm-modules
@@ -93,6 +99,7 @@ DATABASE_URL=postgresql://neondb_owner:test_password@localhost:5432/neondb
 ```
 
 **Actions Performed:**
+
 1. ✅ Checkout code
 2. ✅ Node.js 20.x setup (with npm cache)
 3. ✅ Start PostgreSQL 16 service
@@ -103,6 +110,7 @@ DATABASE_URL=postgresql://neondb_owner:test_password@localhost:5432/neondb
 8. ✅ Post comment on PR (if tests fail)
 
 **Artifacts:**
+
 - `coverage-report/` - Retained for 30 days
 - Downloadable from GitHub Actions run details
 
@@ -113,12 +121,14 @@ DATABASE_URL=postgresql://neondb_owner:test_password@localhost:5432/neondb
 **Purpose:** Builds Docker image and pushes to Docker Hub
 
 **Trigger Conditions:**
+
 ```yaml
 - Push to main branch
 - Manual trigger (workflow_dispatch)
 ```
 
 **Actions Performed:**
+
 1. ✅ Checkout code
 2. ✅ Docker Buildx setup
 3. ✅ Docker Hub login (using secrets)
@@ -128,16 +138,19 @@ DATABASE_URL=postgresql://neondb_owner:test_password@localhost:5432/neondb
 7. ✅ Write info to GitHub Summary
 
 **Supported Platforms:**
+
 - `linux/amd64` (Intel/AMD)
 - `linux/arm64` (Apple Silicon, ARM64 servers)
 
 **Docker Image Tags:**
+
 - Branch name (e.g: `main`)
 - Commit SHA (e.g: `main-abc123def`)
 - `latest` (most recent)
 - Timestamp (e.g: `prod-20260410-093045`)
 
 **Example Images:**
+
 ```
 your-username/acquisitions:main
 your-username/acquisitions:main-abc123def
@@ -150,6 +163,7 @@ your-username/acquisitions:prod-20260410-093045
 ## 🚀 Initial Setup Steps
 
 ### Step 1: Add GitHub Secrets
+
 ```
 Settings > Secrets and variables > Actions
 + New repository secret
@@ -158,6 +172,7 @@ Settings > Secrets and variables > Actions
 ```
 
 ### Step 2: Test Locally
+
 ```bash
 npm run lint:fix
 npm run format
@@ -165,6 +180,7 @@ npm test
 ```
 
 ### Step 3: Commit & Push
+
 ```bash
 git add .
 git commit -m "Add GitHub Actions workflows"
@@ -172,6 +188,7 @@ git push origin main
 ```
 
 ### Step 4: Watch GitHub Actions Dashboard
+
 1. Go to your repository
 2. `Actions` tab
 3. Watch workflows run
@@ -181,12 +198,14 @@ git push origin main
 ## ✨ Workflow Features
 
 ### lint-and-format.yml Features:
+
 - ✅ Node.js caching (fast startup)
 - ✅ `continue-on-error: true` (both checks run)
 - ✅ Automatic PR comments
 - ✅ Clear error messages
 
 ### tests.yml Features:
+
 - ✅ PostgreSQL service integration
 - ✅ Coverage reports (artifacts)
 - ✅ GitHub Step Summary
@@ -194,6 +213,7 @@ git push origin main
 - ✅ Automatic PR comments
 
 ### docker-build-and-push.yml Features:
+
 - ✅ Multi-platform build (Buildx)
 - ✅ GitHub Actions caching
 - ✅ Metadata action (auto tags)
@@ -254,6 +274,7 @@ Check these boxes to complete setup:
    - Add DOCKER_USERNAME and DOCKER_PASSWORD
 
 3. **Test Locally**
+
    ```bash
    npm run lint
    npm run format:check
@@ -261,6 +282,7 @@ Check these boxes to complete setup:
    ```
 
 4. **Push Changes**
+
    ```bash
    git add .
    git commit -m "Add CI/CD workflows"
@@ -290,9 +312,10 @@ You have successfully set up 3 GitHub Actions CI/CD workflows!
 
 ✅ **Every push/PR:** Automatic ESLint and Prettier check  
 ✅ **Every push/PR:** Automatic Jest tests  
-✅ **Every main push:** Docker image build and Docker Hub push  
+✅ **Every main push:** Docker image build and Docker Hub push
 
 ### Now You Have:
+
 - 🚀 Automatic code quality checks
 - 🧪 Automatic test execution
 - 🐳 Automatic Docker image creation
@@ -307,4 +330,3 @@ You have successfully set up 3 GitHub Actions CI/CD workflows!
 **Version:** 1.0.0  
 **Node.js:** 20.x  
 **Status:** ✅ READY TO USE
-

@@ -1,7 +1,15 @@
 import express from 'express';
-import {fetchAllUsers, fetchUserById, updateUserData, deleteUserData} from "#controllers/users.controller.js";
-import {requireAdmin, requireAuthOrAdmin} from "#middleware/permissions.middleware.js";
-import {authenticateStrict} from "#middleware/authenticate.middleware.js";
+import {
+  fetchAllUsers,
+  fetchUserById,
+  updateUserData,
+  deleteUserData,
+} from '#controllers/users.controller.js';
+import {
+  requireAdmin,
+  requireAuthOrAdmin,
+} from '#middleware/permissions.middleware.js';
+import { authenticateStrict } from '#middleware/authenticate.middleware.js';
 
 const router = express.Router();
 

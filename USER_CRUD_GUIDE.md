@@ -14,11 +14,13 @@ Full CRUD (Create, Read, Update, Delete) operations have been implemented for th
 ## 🚀 API Endpoints
 
 ### 1. **GET /api/users** - Fetch All Users
+
 **Handler:** `fetchAllUsers`  
 **Authentication:** Optional  
 **Authorization:** None
 
 **Response:**
+
 ```json
 {
   "message": "Successfully retrieved users",
@@ -39,14 +41,17 @@ Full CRUD (Create, Read, Update, Delete) operations have been implemented for th
 ---
 
 ### 2. **GET /api/users/:id** - Fetch User by ID
+
 **Handler:** `fetchUserById`  
 **Authentication:** Optional  
 **Authorization:** None
 
 **Parameters:**
+
 - `id` (URL param) - Numeric user ID
 
 **Response:**
+
 ```json
 {
   "message": "User retrieved successfully",
@@ -62,6 +67,7 @@ Full CRUD (Create, Read, Update, Delete) operations have been implemented for th
 ```
 
 **Error:**
+
 ```json
 {
   "message": "User with ID 999 not found"
@@ -71,14 +77,17 @@ Full CRUD (Create, Read, Update, Delete) operations have been implemented for th
 ---
 
 ### 3. **PUT /api/users/:id** - Update User
+
 **Handler:** `updateUserData`  
 **Authentication:** ✅ Required  
 **Authorization:** ✅ Required
 
 **Parameters:**
+
 - `id` (URL param) - Numeric user ID
 
 **Request Body:**
+
 ```json
 {
   "name": "Jane Doe",
@@ -88,11 +97,13 @@ Full CRUD (Create, Read, Update, Delete) operations have been implemented for th
 ```
 
 **Authorization Rules:**
+
 - Users can only update themselves
 - Only admins can update other users
 - Only admins can change the role field
 
 **Response:**
+
 ```json
 {
   "message": "User updated successfully",
@@ -108,39 +119,44 @@ Full CRUD (Create, Read, Update, Delete) operations have been implemented for th
 ```
 
 **Errors:**
+
 ```json
 {
-  "message": "Unauthorized"  // No authenticated user
+  "message": "Unauthorized" // No authenticated user
 }
 ```
 
 ```json
 {
-  "message": "You can only update your own information"  // Non-admin updating others
+  "message": "You can only update your own information" // Non-admin updating others
 }
 ```
 
 ```json
 {
-  "message": "Only admins can update user roles"  // Non-admin trying to change role
+  "message": "Only admins can update user roles" // Non-admin trying to change role
 }
 ```
 
 ---
 
 ### 4. **DELETE /api/users/:id** - Delete User
+
 **Handler:** `deleteUserData`  
 **Authentication:** ✅ Required  
 **Authorization:** ✅ Required
 
 **Parameters:**
+
 - `id` (URL param) - Numeric user ID
 
 **Authorization Rules:**
+
 - Users can only delete themselves
 - Admins can delete any user
 
 **Response:**
+
 ```json
 {
   "message": "User 1 deleted successfully"
@@ -148,15 +164,16 @@ Full CRUD (Create, Read, Update, Delete) operations have been implemented for th
 ```
 
 **Errors:**
+
 ```json
 {
-  "message": "Unauthorized"  // No authenticated user
+  "message": "Unauthorized" // No authenticated user
 }
 ```
 
 ```json
 {
-  "message": "You can only delete your own account"  // Non-admin deleting others
+  "message": "You can only delete your own account" // Non-admin deleting others
 }
 ```
 
@@ -165,48 +182,56 @@ Full CRUD (Create, Read, Update, Delete) operations have been implemented for th
 ## 📁 Files Modified/Created
 
 ### 1. **src/validations/users.validation.js** (NEW)
+
 Zod schemas for user validation:
 
 **Schemas:**
+
 - `userIdSchema` - Validates numeric user IDs
 - `updateUserSchema` - Validates update request body
 
 ```javascript
-import {z} from 'zod';
+import { z } from 'zod';
 
 export const userIdSchema = z.object({
-  id: z.string().regex(/^\d+$/, "ID must be a valid number").transform(Number)
+  id: z.string().regex(/^\d+$/, 'ID must be a valid number').transform(Number),
 });
 
-export const updateUserSchema = z.object({
-  name: z.string().min(2).max(255).trim().optional(),
-  email: z.email().max(255).toLowerCase().trim().optional(),
-  role: z.enum(['user', 'admin']).optional()
-}).refine(data => Object.keys(data).length > 0, {
-  message: "At least one field must be provided for update"
-});
+export const updateUserSchema = z
+  .object({
+    name: z.string().min(2).max(255).trim().optional(),
+    email: z.email().max(255).toLowerCase().trim().optional(),
+    role: z.enum(['user', 'admin']).optional(),
+  })
+  .refine(data => Object.keys(data).length > 0, {
+    message: 'At least one field must be provided for update',
+  });
 ```
 
 ---
 
 ### 2. **src/services/users.services.js** (UPDATED)
+
 Service functions for database operations:
 
 **New Functions:**
 
 #### `getUserById(id)`
+
 - Takes numeric user ID
 - Returns user object with selected fields
 - Throws error if user not found
 - Logs all operations
 
 #### `updateUser(id, updates)`
+
 - Takes user ID and updates object
 - Validates user exists before updating
 - Returns updated user object
 - Logs operation with timestamp
 
 #### `deleteUser(id)`
+
 - Takes user ID
 - Validates user exists before deletion
 - Deletes user from database
@@ -216,17 +241,20 @@ Service functions for database operations:
 ---
 
 ### 3. **src/controllers/users.controller.js** (UPDATED)
+
 Controller functions handling HTTP requests:
 
 **New Functions:**
 
 #### `fetchUserById(req, res, next)`
+
 - Validates ID parameter using schema
 - Calls service to fetch user
 - Returns formatted JSON response
 - Handles errors via next()
 
 #### `updateUserData(req, res, next)`
+
 - Validates ID and request body
 - Checks user authentication
 - Validates authorization (self or admin)
@@ -235,6 +263,7 @@ Controller functions handling HTTP requests:
 - Returns updated user
 
 #### `deleteUserData(req, res, next)`
+
 - Validates ID parameter
 - Checks user authentication
 - Validates authorization (self or admin)
@@ -244,6 +273,7 @@ Controller functions handling HTTP requests:
 ---
 
 ### 4. **src/routes/users.routes.js** (UPDATED)
+
 Route definitions updated to use new handlers:
 
 ```javascript
@@ -258,12 +288,14 @@ router.delete('/:id', deleteUserData);
 ## 🔒 Security Features
 
 ### Authorization
+
 - **Read (GET):** No authentication required
 - **Update (PUT):** Users can update themselves, admins can update anyone
 - **Delete (DELETE):** Users can delete themselves, admins can delete anyone
 - **Role changes:** Only admins can modify user roles
 
 ### Validation
+
 - ID must be numeric
 - Name must be 2-255 characters
 - Email must be valid format
@@ -271,6 +303,7 @@ router.delete('/:id', deleteUserData);
 - At least one field required for updates
 
 ### Logging
+
 - All operations logged with user ID
 - Unauthorized attempts logged with warnings
 - Errors logged with context
@@ -281,16 +314,19 @@ router.delete('/:id', deleteUserData);
 ## 🧪 Example Usage
 
 ### Fetch All Users
+
 ```bash
 curl http://localhost:3000/api/users
 ```
 
 ### Fetch User by ID
+
 ```bash
 curl http://localhost:3000/api/users/1
 ```
 
 ### Update User (Self)
+
 ```bash
 curl -X PUT http://localhost:3000/api/users/1 \
   -H "Content-Type: application/json" \
@@ -298,6 +334,7 @@ curl -X PUT http://localhost:3000/api/users/1 \
 ```
 
 ### Update User (Admin)
+
 ```bash
 curl -X PUT http://localhost:3000/api/users/2 \
   -H "Content-Type: application/json" \
@@ -305,6 +342,7 @@ curl -X PUT http://localhost:3000/api/users/2 \
 ```
 
 ### Delete User (Self)
+
 ```bash
 curl -X DELETE http://localhost:3000/api/users/1
 ```
@@ -314,6 +352,7 @@ curl -X DELETE http://localhost:3000/api/users/1
 ## 📝 Database Operations
 
 ### Drizzle ORM Used
+
 - `db.select()` - Fetch operations
 - `db.update()` - Update operations
 - `db.delete()` - Delete operations
@@ -321,7 +360,9 @@ curl -X DELETE http://localhost:3000/api/users/1
 - `.returning()` - Return updated record
 
 ### Selected Fields
+
 All operations select:
+
 - `id`
 - `email`
 - `name`
@@ -334,6 +375,7 @@ All operations select:
 ## 🛠️ Middleware Integration
 
 The implementation expects:
+
 - `req.user?.id` - Authenticated user ID
 - `req.user?.role` - User role ('user' or 'admin')
 
@@ -344,6 +386,7 @@ Integration with your auth middleware should set these properties.
 ## 📊 Error Handling
 
 All functions use try-catch blocks:
+
 - Service functions throw errors
 - Controller functions catch and pass to next(e)
 - Express error handler processes errors
@@ -353,12 +396,12 @@ All functions use try-catch blocks:
 
 ## ✅ Validation Summary
 
-| Endpoint | Method | Auth | Params | Body |
-|----------|--------|------|--------|------|
-| /api/users | GET | No | - | - |
-| /api/users/:id | GET | No | id ✓ | - |
-| /api/users/:id | PUT | Yes | id ✓ | name, email, role ✓ |
-| /api/users/:id | DELETE | Yes | id ✓ | - |
+| Endpoint       | Method | Auth | Params | Body                |
+| -------------- | ------ | ---- | ------ | ------------------- |
+| /api/users     | GET    | No   | -      | -                   |
+| /api/users/:id | GET    | No   | id ✓   | -                   |
+| /api/users/:id | PUT    | Yes  | id ✓   | name, email, role ✓ |
+| /api/users/:id | DELETE | Yes  | id ✓   | -                   |
 
 ---
 
@@ -384,5 +427,3 @@ All functions use try-catch blocks:
 
 **Implementation Complete:** 2026-04-09  
 **Status:** ✅ Production Ready
-
-

@@ -5,6 +5,7 @@ Bu rehber, GitHub Actions workflow'larının çalışabilmesi için gerekli olan
 ## 📋 İhtiyaç Duyulan Secrets
 
 ### Docker Build and Push Workflow için:
+
 - `DOCKER_USERNAME`
 - `DOCKER_PASSWORD` (veya PAT)
 
@@ -13,6 +14,7 @@ Bu rehber, GitHub Actions workflow'larının çalışabilmesi için gerekli olan
 ## 🛠️ Adım Adım Kurulum
 
 ### Adım 1: Docker Hub Hesabı Oluşturun
+
 1. https://hub.docker.com adresine gidin
 2. Eğer hesabınız yoksa "Sign Up" seçeneğinden hesap oluşturun
 3. Hesabınıza giriş yapın
@@ -20,6 +22,7 @@ Bu rehber, GitHub Actions workflow'larının çalışabilmesi için gerekli olan
 ### Adım 2: Personal Access Token (PAT) Oluşturun
 
 #### Docker Hub'da PAT Oluşturma:
+
 1. Docker Hub dashboard'unuzda
 2. Sağ üstte profile icon → **Account Settings**
 3. Sol menüden **Security** seçin
@@ -33,22 +36,26 @@ Bu rehber, GitHub Actions workflow'larının çalışabilmesi için gerekli olan
 ### Adım 3: GitHub Repository'ye Secrets Ekleyin
 
 #### Secrets Ekleme Yöntemi 1: GitHub Web UI
+
 1. GitHub repository'nize gidin
 2. **Settings** sekmesine tıklayın
 3. Sol menüden **Secrets and variables** → **Actions** seçin
 4. **New repository secret** butonuna tıklayın
 
 #### Secret 1: DOCKER_USERNAME
+
 - **Name:** `DOCKER_USERNAME`
 - **Value:** Docker Hub kullanıcı adınız (örn: `john_doe`)
 - **Add secret** butonuna tıklayın
 
 #### Secret 2: DOCKER_PASSWORD
+
 - **Name:** `DOCKER_PASSWORD`
 - **Value:** Oluşturduğunuz Personal Access Token
 - **Add secret** butonuna tıklayın
 
 #### Secrets Ekleme Yöntemi 2: GitHub CLI
+
 ```bash
 # Eğer GitHub CLI yüklüyse:
 gh secret set DOCKER_USERNAME -b "your-docker-username"
@@ -56,6 +63,7 @@ gh secret set DOCKER_PASSWORD -b "your-docker-pat"
 ```
 
 ### Adım 4: Secrets'ı Doğrulayın
+
 1. **Settings** → **Secrets and variables** → **Actions**
 2. Oluşturduğunuz secrets'ı listede göreceksiniz
 3. Her secret'in adı görülür ama değeri gizlidir (güvenlik için)
@@ -77,21 +85,26 @@ Secrets başarıyla ayarlanmış mı kontrol etmek için:
 ## 🔒 Güvenlik Önerileri
 
 ### 1. Personal Access Token Yerine SSH Anahtarı
+
 Daha güvenli için SSH anahtarı kullanabilirsiniz, ancak bu proje için PAT yeterlidir.
 
 ### 2. Token Güvenliği
+
 - ❌ Token'ı git history'ye commit etmeyin
 - ❌ Token'ı pull request'lerde açıklamayın
 - ✅ GitHub Secrets kullanın
 - ✅ Düzenli olarak token'ları rotate edin
 
 ### 3. Secrets Görünürlüğü
+
 - Repository Private olsa dahi, secrets yalnızca workflow runner'ında erişilebilir
 - GitHub'ın bulut sunucularında güvenli olarak saklanır
 - Logs'ta secrets maskeli gösterilir
 
 ### 4. Token Iptali
+
 Eğer token'ı yanlışlıkla açıkça birisi görmüşse:
+
 1. Docker Hub Dashboard → Account Settings → Security
 2. İlgili token'ın yanındaki delete butonuna tıklayın
 3. Yeni bir token oluşturun
@@ -116,29 +129,39 @@ GitHub Secrets kurulumundan önce tüm kontrol listesini işaretleyin:
 ## 🆘 Sorun Giderme
 
 ### Problem: Docker Login Failed
+
 ```
 Error: Error saving credentials: error storing credentials...
 ```
-**Çözüm:** 
+
+**Çözüm:**
+
 - DOCKER_USERNAME ve DOCKER_PASSWORD'ün doğru olduğundan emin olun
 - Token'ın geçerli olup olmadığını kontrol edin (süresi dolmamış mı)
 
 ### Problem: Permission Denied
+
 ```
 Error: permission denied while trying to connect to the Docker daemon
 ```
-**Çözüm:** 
+
+**Çözüm:**
+
 - Workflow'un permissions ayarları kontrol edin
 - Docker Hub hesabının push yetkisi olduğundan emin olun
 
 ### Problem: Secret'i Değiştirdim Ama Hala Hata Alıyorum
-**Çözüm:** 
+
+**Çözüm:**
+
 - GitHub secret'lerinin değiştirilmesi biraz zaman alabilir
 - 2-3 dakika bekleyin
 - Yeni bir workflow run'ı başlatın
 
 ### Problem: Token'ı Unuttum
-**Çözüm:** 
+
+**Çözüm:**
+
 - Token'ı kurtaramazsınız (docker hub yeni token göstermez)
 - Yeni bir token oluşturun:
   1. Docker Hub → Account Settings → Security
@@ -166,4 +189,3 @@ Secrets doğru ayarlandıktan sonra:
 ---
 
 **Not:** Tüm secrets doğru ayarlandıktan sonra, `main` branch'e push yapıp workflow'ların başarıyla çalışması için bekleyin!
-
