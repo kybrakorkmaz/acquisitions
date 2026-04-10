@@ -1,4 +1,4 @@
-# 🎯 Acquisitions API
+# 🐳 Acquisitions API
 
 A Node.js Express backend application with PostgreSQL support via Neon Database. Includes full CRUD operations, authentication, and authorization features.
 
