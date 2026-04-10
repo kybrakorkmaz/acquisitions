@@ -1,0 +1,69 @@
+name: Lint and Format
+
+on:
+  push:
+    branches:
+      - main
+      - staging
+  pull_request:
+    branches:
+      - main
+      - staging
+
+jobs:
+  lint-and-format:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run ESLint
+        id: eslint
+        run: npm run lint
+        continue-on-error: true
+
+      - name: Run Prettier check
+        id: prettier
+        run: npm run format:check
+        continue-on-error: true
+
+      - name: Comment on PR with ESLint issues
+        if: failure() && github.event_name == 'pull_request' && steps.eslint.outcome == 'failure'
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: '❌ **ESLint issues found!**\n\nRun `npm run lint:fix` to automatically fix most issues.'
+            })
+
+      - name: Comment on PR with Prettier issues
+        if: failure() && github.event_name == 'pull_request' && steps.prettier.outcome == 'failure'
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: '❌ **Prettier formatting issues found!**\n\nRun `npm run format` to automatically format your code.'
+            })
+
+      - name: Fail if linting or formatting issues found
+        if: steps.eslint.outcome == 'failure' || steps.prettier.outcome == 'failure'
+        run: exit 1
+

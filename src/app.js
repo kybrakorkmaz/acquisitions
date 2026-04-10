@@ -7,6 +7,7 @@ import cookieParser from 'cookie-parser';
 import authRoutes from '#routes/auth.routes.js';
 import userRoutes from "#routes/users.routes.js";
 import securityMiddleware from '#middleware/security.middleware.js';
+import authenticate from '#middleware/authenticate.middleware.js';
 const app = express();
 
 app.use(helmet());
@@ -17,6 +18,7 @@ app.use(cookieParser());
 app.use(morgan('combined', {stream: {write: (message)=>logger.info(message.trim())} }));
 
 app.use(securityMiddleware);
+app.use(authenticate); // Apply authentication globally
 
 app.get('/', (req, res) => {
   logger.info('Hello from Acquisitions');
